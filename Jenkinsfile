@@ -15,7 +15,9 @@ pipeline {
         }
         stage('Code Build') {
             steps {
-                sh 'mvn verify -DskipUnitTests'
+                 sh 'mvn clean'
+                sh 'mvn install -DskipTests'
+                sh 'mvn package -DskipTests'
             }
         }
         stage('Maven Test') {
