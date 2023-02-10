@@ -21,10 +21,12 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
-        stage('Test'){
+         stage('Building image') {
             steps{
-                sh 'mvn test'
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
-        }
+        
     }
 }
