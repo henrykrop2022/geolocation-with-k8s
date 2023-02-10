@@ -15,12 +15,12 @@ pipeline {
         }
         stage('Code Build') {
             steps {
-                sh 'mvn clean install packege'
+                sh 'mvn verify -DskipUnitTests'
             }
         }
         stage('Maven Test') {
             steps {
-                sh 'mvn clean install -U'
+                sh 'mvn clean install package'
             }
         }
         // Building Docker images
