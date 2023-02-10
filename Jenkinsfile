@@ -14,5 +14,12 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
             }
         }
+        stage(' Code Build'){
+            steps{
+                sh 'mvn clean'
+                sh 'mvn install -DskipTests'
+                sh 'mvn package -DskipTests'
+            }
+        }
     }
 }
