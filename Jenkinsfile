@@ -18,9 +18,9 @@ pipeline {
                 sh 'mvn clean install -DskipTests'
             }
         }
-        stage('Test') {
+        stage('Maven Test') {
             steps {
-                sh 'mvn -o test'
+                sh 'mvn clean install package'
             }
         }
         // Building Docker images
