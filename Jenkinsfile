@@ -20,12 +20,7 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
-        // stage('Maven Test') {
-        //     steps {
-        //         sh 'mvn clean install package'
-        //     }
-        }
-        Building Docker images
+        // Building Docker images
         stage('Building image') {
             steps{
                 script {
@@ -49,5 +44,10 @@ pipeline {
                  sh "kubectl apply -f eks-deploy-from-ecr.yaml"
                 }
             }
+        }
+         // stage('Maven Test') {
+        //     steps {
+        //         sh 'mvn clean install package'
+        //     }
         }
     }
