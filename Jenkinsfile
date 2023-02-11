@@ -5,7 +5,7 @@ pipeline {
     }
     environment {
         registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_rep'
-        registryCredential = 'aws-jenkis'
+        registryCredential = 'docker-Cred'
         dockerimage = '' 
     }
     stages{
@@ -28,7 +28,7 @@ pipeline {
                 }
             }  
         }
-         stage('Pushing to dockerhub') {
+         stage('Pushing to ecr') {
             steps{
                 script {
                       docker.withRegistry("https://"+registry,"ecr:us-east-1:"+registryCredential) {
