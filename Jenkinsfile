@@ -31,7 +31,7 @@ pipeline {
          stage('Pushing to ecr') {
             steps{
                 script {
-                      docker.withRegistry("https://"+registry,"ecr:us-east-1:"+registryCredential) {
+                      withCredentials([usernameColonPassword(credentialsId: 'henryrop', variable: 'docker-Cred')]) {
                         dockerImage.push()
                     }
                 }
