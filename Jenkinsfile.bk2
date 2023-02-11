@@ -34,11 +34,23 @@ pipeline {
                     sh 'docker push 880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_rep:latest'
                 }
             }
-        }    
+        } 
+         pipeline {
+    agent any
+    stages {
+        stage ('Cleanup workspace'){
+            steps{
+                script {
+                    cleanWs()
+                }
+            }
+        }
+    }
+}  
         stage ("EKS Deployment") {
             steps {
                 script {
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '') {
+                    kubeconfig(credentialsId: 'eks_credential', serverUrl: '') {
                       sh "kubectl apply -f eks-deploy-from-ecr.yaml"
                    }
                  }
