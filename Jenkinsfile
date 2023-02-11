@@ -30,11 +30,11 @@ pipeline {
                 }
             }  
         }
-         stage('Pushing to ecr') {
+         stage('Pushing to dockerhub') {
             steps{
                 script {
-                      withCredentials([string(credentialsId: 'henryrop', variable: 'dockerhub_Cred')]) {
-                        sh 'docker login -u henryrop -p ${dockerhub_cred}'
+                    //   withCredentials([string(credentialsId: 'henryrop', variable: 'dockerhub_Cred')]) {
+                        sh 'docker login -u henryrop -p ${dockerhub-Cred}'
                         sh 'docker image push henryrop/$JOB_NAME:V1$BUILD_ID'
                         sh  'docker image push henryrop/$JOB_NAME:latest'
                     }
@@ -42,4 +42,3 @@ pipeline {
             }
         }
     }
-}
