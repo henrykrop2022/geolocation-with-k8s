@@ -5,8 +5,7 @@ pipeline {
     }
     environment {
         registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_rep'
-        // registryCredential = 'aws-jenkis-ID'
-        // docker_user_PSW = 'DOCKER_USER'
+        dockerimage = '' 
     }
     stages{
         stage('checkout') {
