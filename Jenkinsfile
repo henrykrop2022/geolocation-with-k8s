@@ -5,8 +5,8 @@ pipeline {
     }
     environment {
         registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_rep'
-        registryCredential = 'docker-Cred'
-        dockerimage = '' 
+        // registryCredential = 'docker-Cred'
+        // dockerimage = '' 
     }
     stages{
         stage('checkout') {
@@ -24,19 +24,15 @@ pipeline {
          stage('Building image') {
             steps{
                 script {
-                     sh 'docker image build -t $JOB_NAME:V1$BUILD_ID .'
-                     sh ' docker image tag $JOB_NAME:V1$BUILD_ID henryrop/$JOB_NAME:V1$BUILD_ID'
-                     sh ' docker image tag $JOB_NAME:V1$BUILD_ID henryrop/$JOB_NAME:latest'
+                      dockerImage = docker.build registry
                 }
             }  
         }
-         stage('Pushing to dockerhub') {
+         stage('Pushing to ECR') {
             steps{
                 script {
-                    //   withCredentials([string(credentialsId: '', variable: 'dockerhub-Cred')]) {
-                        sh 'docker login -u henryrop -p ${dockeruser}'
-                        sh 'docker image push henryrop/$JOB_NAME:V1$BUILD_ID'
-                        sh  'docker image push henryrop/$JOB_NAME:latest'
+                     sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 880385147960.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker push 880385147960.dkr.ecr.us-east-2.amazonaws.com/geolocation_ecr_rep'
                     }
                 }
             }
