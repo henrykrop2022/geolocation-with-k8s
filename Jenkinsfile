@@ -20,6 +20,11 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
          stage('Building image') {
             steps{
                 script {
