@@ -35,9 +35,6 @@ pipeline {
                 }
             }
         } 
-         pipeline {
-    agent any
-    stages {
         stage ('Cleanup workspace'){
             steps{
                 script {
@@ -45,8 +42,6 @@ pipeline {
                 }
             }
         }
-    }
-}  
         stage ("EKS Deployment") {
             steps {
                 script {
