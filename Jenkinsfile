@@ -24,15 +24,19 @@ pipeline {
          stage('Building image') {
             steps{
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                     sh 'docker image build -t $JOB_NAME:V1$BUILD_ID .'
+                     sh ' docker image tag $JOB_NAME:V1$BUILD_ID henryrop/$JOB_NAME:V1$BUILD_ID'
+                     sh ' docker image tag $JOB_NAME:V1$BUILD_ID henryrop/$JOB_NAME:latest'
                 }
             }  
         }
          stage('Pushing to ecr') {
             steps{
                 script {
-                      withCredentials([usernameColonPassword(credentialsId: 'henryrop', variable: 'docker-Cred')]) {
-                        dockerImage.push()
+                      withCredentials([string(credentialsId: 'henryrop', variable: 'dockerhub_Cred')]) {
+                        sh 'docker login -u henryrop -p ${dockerhub_cred}'
+                        sh 'docker image push henryrop/$JOB_NAME:V1$BUILD_ID'
+                        sh  'docker image push henryrop/$JOB_NAME:latest'
                     }
                 }
             }
