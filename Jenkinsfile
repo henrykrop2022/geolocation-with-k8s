@@ -7,6 +7,7 @@ pipeline{
     registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation'
     registryCredential = 'aws-jenkis'
     dockerimage = ''
+     }
 }
     // stages{ 
     //     stage('UNIT Testing'){
@@ -73,7 +74,7 @@ pipeline{
     //                 cleanWs()
     //             }
     //         }
-        }
-    }
+    //     }
+    // }
 
     
