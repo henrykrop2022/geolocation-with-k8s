@@ -19,6 +19,12 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
+         stage('SonarQube Analysis') {
+           def mvn = tool 'Default Maven';
+              withSonarQubeEnv() {
+              sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=devs-utrain"
+             }
+        }
         stage(' SonarQube Analysis'){
             steps {
                 script {
@@ -29,6 +35,7 @@ pipeline {
             }   
             
         }
+        
         stage('Quality Gate'){
             steps{
                 script {
