@@ -13,6 +13,23 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
             }
         }
+        stage(' SonarQube Analysis'){
+            steps {
+                script {
+                withSonarQubeEnv(credentialsId: 'SonarQube-token') {
+                sh 'mvn clean verify sonar:sonar'
+                   }
+                }
+            }   
+            
+        }
+        stage('Quality Gate'){
+            steps{
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-token'
+                }
+            }
+        }
         stage(' Code Build'){
             steps{
                 sh 'mvn clean'
