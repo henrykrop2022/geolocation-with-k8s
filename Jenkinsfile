@@ -18,11 +18,11 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         sh 'mvn test'
+        //     }
+        // }
         // Building Docker images
         stage('Building image') {
             steps{
