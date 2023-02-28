@@ -33,8 +33,7 @@ pipeline{
                 sh 'mvn clean verify sonar:sonar'
                    }
                 }
-            }   
-            
+            }       
         }
         stage('Quality Gate'){
             steps{
@@ -42,7 +41,6 @@ pipeline{
                     waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-token'
                 }
             }
-       }
        }
          stage('Building image') {
             steps{
