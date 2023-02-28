@@ -9,6 +9,11 @@ pipeline{
     dockerimage = ''
         }
     stages{ 
+        stage('checkout') {
+            steps{
+                git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
+            }
+        }
         stage('UNIT Testing'){
             steps{
                 sh 'mvn clean install package'
