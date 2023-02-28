@@ -35,13 +35,7 @@ pipeline {
                 }
             }
         } 
-        stage ('Cleanup workspace'){
-            steps{
-                script {
-                    cleanWs()
-                }
-            }
-        }
+      
         stage ("EKS Deployment") {
             steps {
                 script {
@@ -49,6 +43,13 @@ pipeline {
                       sh "kubectl apply -f eks-deploy-from-ecr.yaml"
                    }
                  }
+            }
+        }
+          stage ('Cleanup workspace'){
+            steps{
+                script {
+                    cleanWs()
+                }
             }
         }
     }
