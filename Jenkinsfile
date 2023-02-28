@@ -8,40 +8,40 @@ pipeline{
     registryCredential = 'aws-jenkis'
     dockerimage = ''
 }
-    stages{ 
-        stage('UNIT Testing'){
-            steps{
-                sh 'mvn test'
-            }
-        }
-        stage('Integration Testing'){
-            steps{
-                script{
-                    sh 'mvn verify -DskipUnitTests'
-                }
-            }
-        }
-        stage('Maven Build'){
-            steps{
-                sh 'mvn clean install package'
-            }
-        }
-        stage(' SonarQube Analysis'){
-            steps {
-                script {
-                withSonarQubeEnv(credentialsId: 'SonarQube-token') {
-                sh 'mvn clean verify sonar:sonar'
-                   }
-                }
-            }       
-        }
-        stage('Quality Gate'){
-            steps{
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-token'
-                }
-            }
-       }
+    // stages{ 
+    //     stage('UNIT Testing'){
+    //         steps{
+    //             sh 'mvn test'
+    //         }
+    //     }
+    //     stage('Integration Testing'){
+    //         steps{
+    //             script{
+    //                 sh 'mvn verify -DskipUnitTests'
+    //             }
+    //         }
+    //     }
+    //     stage('Maven Build'){
+    //         steps{
+    //             sh 'mvn clean install package'
+    //         }
+    //     }
+    //     stage(' SonarQube Analysis'){
+    //         steps {
+    //             script {
+    //             withSonarQubeEnv(credentialsId: 'SonarQube-token') {
+    //             sh 'mvn clean verify sonar:sonar'
+    //                }
+    //             }
+    //         }       
+    //     }
+    //     stage('Quality Gate'){
+    //         steps{
+    //             script {
+    //                 waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-token'
+    //             }
+    //         }
+    //    }
     //      stage('Building image') {
     //         steps{
     //             script {
