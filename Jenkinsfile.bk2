@@ -1,29 +1,22 @@
-pipeline{
+pipeline {
     agent any
     tools{
         maven 'M2_HOME'
     }
     environment {
-    registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation'
-    registryCredential = 'aws-jenkis'
-    dockerimage = ''
-}
-    stages{ 
-        stage('UNIT Testing'){
+        registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation'
+        dockerimage = '' 
+    }
+    stages{
+        stage('checkout') {
             steps{
-                sh 'mvn test'
+                git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
             }
         }
-        stage('Integration Testing'){
+         stage(' Code Build'){
             steps{
-                script{
-                    sh 'mvn verify -DskipUnitTests'
-                }
-            }
-        }
-        stage('Maven Build'){
-            steps{
-                sh 'mvn clean install package'
+                sh 'mvn clean install -DskipTests=true'
+                sh 'mvn package -DskipTests'
             }
         }
         stage(' SonarQube Analysis'){
@@ -36,14 +29,14 @@ pipeline{
             }   
             
         }
+        
         stage('Quality Gate'){
             steps{
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-token'
                 }
             }
-       }
-       }
+        }
          stage('Building image') {
             steps{
                 script {
@@ -77,5 +70,5 @@ pipeline{
             }
         }
     }
-
+}
     
