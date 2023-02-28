@@ -20,5 +20,14 @@ pipeline{
                 sh 'mvn package -DskipTests'
             }
         }
+        stage(' SonarQube Analysis'){
+            steps {
+                script {
+                withSonarQubeEnv(credentialsId: 'SonarQube-token') {
+                sh 'mvn clean verify sonar:sonar'
+                 }
+              }
+           }
+        }  
     }
 }
