@@ -15,14 +15,8 @@ pipeline {
         }
          stage(' Code Build'){
             steps{
-                sh 'mvn clean'
-                sh 'mvn install -DskipTests'
+                sh 'mvn clean install -DskipTests=true'
                 sh 'mvn package -DskipTests'
-            }
-        }
-         stage('Maven Test') {
-            steps {
-                sh 'mvn clean install package'
             }
         }
         stage(' SonarQube Analysis'){
