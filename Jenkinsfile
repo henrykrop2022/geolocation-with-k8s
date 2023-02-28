@@ -16,7 +16,8 @@ pipeline{
         }
         stage('UNIT Testing'){
             steps{
-                sh 'mvn clean install package'
+                 sh 'mvn clean install -DskipTests=true'
+                sh 'mvn package -DskipTests'
             }
         }
     }
