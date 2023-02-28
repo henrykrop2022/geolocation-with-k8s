@@ -20,6 +20,11 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
+         stage('Maven Test') {
+            steps {
+                sh 'mvn clean install package'
+            }
+        }
         stage(' SonarQube Analysis'){
             steps {
                 script {
