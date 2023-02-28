@@ -13,16 +13,16 @@ pipeline{
             steps{
                 sh 'mvn test'
             }
-            }
         }
     }
-    //     stage('Integration Testing'){
-    //         steps{
-    //             script{
-    //                 sh 'mvn verify -DskipUnitTests'
-    //             }
-    //         }
-    //     }
+        stage('Integration Testing'){
+            steps{
+                script{
+                    sh 'mvn verify -DskipUnitTests=false'
+                }
+                }
+            }
+        }
     //     stage('Maven Build'){
     //         steps{
     //             sh 'mvn clean install package'
