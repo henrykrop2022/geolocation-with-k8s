@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: geolocation-ecr-rep-deployment
+  name: hospital_management_ecr_repo
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: geolocation-ecr-rep-app
+      app: hospital_management_ecr_repo
   template:
     metadata:
       labels:
-        app: geolocation-ecr-rep-app
+        app: hospital_management_ecr_repo
     spec:
     containers:
-      - name: geolocation-ecr-rep-app
+      - name: hospital_management_ecr_repo
         image: 880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_rep:latest
         imagePullPolicy: Always
         ports:
@@ -24,9 +24,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: geolocation-ecr-rep-app
-    k8s-app: geolocation-ecr-rep-app
-  name: geolocation-ecr-rep-app
+    app: hospital_management_ecr_repo
+    k8s-app: hospital_management_ecr_repo
+  name: hospital_management_ecr_repo
 spec:
   ports:
   - name: http
@@ -35,4 +35,4 @@ spec:
     targetPort: 8082
   type: LoadBalancer
   selector:
-    app: geolocation-ecr-rep-app
+    app: hospital_management_ecr_repo

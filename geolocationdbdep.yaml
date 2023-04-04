@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: geolocationdb
-        image: vprofile/vprofiledb:V1
+        image: 880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_rep:latest
         args:
          - "--ignore-db-dir=lost+found"
         volumeMounts:
