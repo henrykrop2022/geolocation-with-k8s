@@ -1,52 +1,60 @@
-pipeline {
+pipeline{
     agent any
-    tools{
+    tools {
         maven 'M2_HOME'
     }
     environment {
-        registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation'
-        dockerimage = '' 
+        registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/hospital_management_ecr_repo'
+        registryCredential = 'ecr-credential'
+        dockerimage = ''
     }
-    stages {
-        stage('Checkout'){
+     stages{
+         stage('Git Checkout') {
             steps{
-                git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
-            }
-        }
-        stage('Code Build') {
-            steps {
-                sh 'mvn clean package -DskipTests'
-            }
-        }
-        // stage('Test') {
-        //     steps {
-        //         sh 'mvn test'
-        //     }
-        // }
-        // Building Docker images
-        stage('Building image') {
+             git branch: 'main', url: 'https://github.com/henrykrop2022/hospital_management.git'
+             }
+         }
+        stage('Unit Test'){
             steps{
-                script {
-                    dockerImage = docker.build registry
+                 sh 'mvn test'
+             }
+         }
+        stage('Maven Build'){
+             steps{
+                 sh 'mvn clean package'
+             }
+         }
+        stage('Sonar Analysis'){
+            steps{
+                script{
+                     withSonarQubeEnv(credentialsId: 'hospital-token') {
+                sh 'mvn sonar:sonar'
+                     }
+                 }
+             }
+         }
+        stage('Building Image'){
+            steps{
+                 script{
+                     docker = docker.build registry + ":$BUILD_NUMBER"
                 }
-            }
-        }
-        // Uploading Docker images into AWS ECR
-        stage('Pushing to ECR') {
+             }
+         }
+        stage('Pushing to ECR'){
             steps{
-                script {
+                script{
                     sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 880385147960.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push 880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation:latest'
+                    sh 'docker push 880385147960.dkr.ecr.us-east-1.amazonaws.com/hospital_management_ecr_repo:latest'     
                 }
             }
         }
-        //deploy the image that is in ECR to our EKS cluster
         stage ("Kube Deploy") {
             steps {
-                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'education-eks-6TZYs2tg', contextName: '', credentialsId: 'ecr:us-east-1:aws-access', namespace: '', serverUrl: '']]) {
-                 sh "kubectl apply -f eks-deploy-from-ecr.yaml"
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '']]) {
+                 sh "kubectl apply -f eks_deploy_from_ecr.yaml"
+                    
                 }
             }
         }
-    }
+     }
 }
