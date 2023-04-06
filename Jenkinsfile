@@ -51,7 +51,7 @@ pipeline{
         stage ("Kube Deploy") {
             steps {
                 withCredentials([kubeconfigFile(credentialsId: 'eks_credential', variable: 'KUBECONFIG')]) {
-                 sh 'kubectl config use-context ducation-eks-1omkKCqq'
+                 sh 'kubectl config use-context  aws eks update-kubeconfig --region us-east-1 --name education-eks-1omkKCqq'
                  sh "kubectl apply -f eks_deploy_from_ecr.yaml"
                 }   
             }
