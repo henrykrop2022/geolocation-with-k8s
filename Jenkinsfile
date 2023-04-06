@@ -11,7 +11,7 @@ pipeline{
      stages{
          stage('Git Checkout') {
             steps{
-             git branch: 'main', url: 'https://github.com/henrykrop2022/hospital_management.git'
+             git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
              }
          }
         stage('Unit Test'){
