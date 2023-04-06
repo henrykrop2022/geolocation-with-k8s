@@ -7,6 +7,7 @@ pipeline{
         registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_repo'
         registryCredential = 'ecr-credential'
         dockerimage = ''
+        KUBECONFIG = '/path/to/your/kubeconfig'
     }
      stages{
          stage('Git Checkout') {
@@ -50,7 +51,7 @@ pipeline{
         }
         stage ("Kube Deploy") {
             steps {
-                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'education-eks-1omkKCqq', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '']]) {
+                withKubeCredentials(credentialsId: 'eks_credential', kubeconfigFileVariable: 'KUBECONFIG') {
                  sh "kubectl apply -f eks_deploy_from_ecr.yaml"
                 }   
             }
