@@ -4,7 +4,7 @@ pipeline{
         maven 'M2_HOME'
     }
     environment {
-        registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/hospital_management_ecr_repo'
+        registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_repo'
         registryCredential = 'ecr-credential'
         dockerimage = ''
     }
@@ -44,17 +44,19 @@ pipeline{
             steps{
                 script{
                     sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 880385147960.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push 880385147960.dkr.ecr.us-east-1.amazonaws.com/hospital_management_ecr_repo:latest'     
+                    sh 'docker push 880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_ecr_repo:latest'     
                 }
             }
         }
         stage ("Kube Deploy") {
             steps {
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                withCredentials([kubeconfigFile(credentialsId: 'eks_credential', variable: 'KUBECONFIG')]) {
+                 sh 'kubectl config use-context ducation-eks-1omkKCqq'
                  sh "kubectl apply -f eks_deploy_from_ecr.yaml"
-                    
-                }
+                }   
             }
         }
-     }
+    }
 }
+        
+     
