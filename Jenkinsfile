@@ -50,7 +50,7 @@ pipeline{
         }
         stage ("Kube Deploy") {
             steps {
-                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'education-eks-1omkKCqq', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: 'https://CA71DC182799D1BEAED3F35DB182DD51.gr7.us-east-1.eks.amazonaws.com']]) {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'education-eks-1omkKCqq', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '']]) {
                  sh "kubectl apply -f eks_deploy_from_ecr.yaml"
                 }   
             }
