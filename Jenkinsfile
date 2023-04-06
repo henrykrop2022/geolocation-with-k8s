@@ -14,14 +14,14 @@ pipeline{
              git branch: 'main', url: 'https://github.com/henrykrop2022/geolocation-with-k8s.git'
              }
          }
-        stage('Unit Test'){
+        stage('Maven Build'){
             steps{
-                 sh 'mvn test'
+                 sh 'mvn clean package'
              }
          }
-        stage('Maven Build'){
+        stage('Unit Test'){
              steps{
-                 sh 'mvn clean package'
+                 sh 'mvn test'
              }
          }
         stage('Sonar Analysis'){
