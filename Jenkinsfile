@@ -51,7 +51,7 @@ pipeline{
         }
         stage ("Kube Deploy") {
             steps {
-                withKubeCredentials(credentialsId: 'eks_credential', kubeconfigFileVariable: 'KUBECONFIG') {
+                 withCredentials([kubeconfigFile(credentialsId: 'kubeconfig-creds', variable: 'KUBECONFIG')]) {
                  sh "kubectl apply -f eks_deploy_from_ecr.yaml"
                 }   
             }
